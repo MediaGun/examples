@@ -5,15 +5,62 @@
 
 import QtQuick 2.0
 import VLCQt 1.0
+import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.12
+import Qt.labs.platform 1.0
 
-Rectangle {
-    width: 640
-    height: 480
-    color: "black"
+ApplicationWindow {
+    id: window
+    visible: true
+    minimumWidth: 800
+    minimumHeight: 640
+    width: minimumWidth
+    height: minimumHeight
+    title: Qt.application.name
 
-    VlcVideoPlayer {
-        id: vidwidget
+    header: ToolBar {
+        RowLayout {
+            Button {
+                text: "Open file"
+                onClicked: {
+                    fileDialog.open()
+                }
+            }
+
+            Text {
+                id: fileName
+                text: "No file selected"
+            }
+        }
+    }
+
+    ColumnLayout {
         anchors.fill: parent
-        url: "http://videos.hd-trailers.net/e23ab4b8-a737-46dd-a0e4-259ba36056b6_YsfXbEghC5XywlmkKiYrF0D1oWcPYHA94aPeKmTuUKJJVJBpH4AFbPzcNWMhAJHuRnKZAAatvKg-_8_0.mp4"
+
+        VlcVideoPlayer {
+            id: vidwidget
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            fillColor: "black"
+        }
+
+//        Slider {
+//            id: seekBar
+//            Layout.fillWidth: true
+//            from: 0
+//            to: vidwidget.length
+//            value: vidwidget.position
+//        }
+
+        FileDialog {
+            id: fileDialog
+            onAccepted: {
+                vidwidget.url = file
+                vidwidget.play()
+                fileName.text = file;
+            }
+        }
     }
 }
+
+

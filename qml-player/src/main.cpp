@@ -4,8 +4,8 @@
 */
 
 #include <QtCore/QCoreApplication>
-#include <QtGui/QGuiApplication>
-#include <QtQuick/QQuickView>
+#include <QApplication>
+#include <QQmlApplicationEngine>
 
 #include <VLCQtCore/Common.h>
 #include <VLCQtQml/QmlVideoPlayer.h>
@@ -15,14 +15,13 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("VLC-Qt QML Player");
     QCoreApplication::setAttribute(Qt::AA_X11InitThreads);
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     VlcCommon::setPluginPath(app.applicationDirPath() + "/plugins");
     VlcQmlVideoPlayer::registerPlugin();
 
-    QQuickView quickView;
-    quickView.setSource(QUrl(QStringLiteral("qrc:/qml/video.qml")));
-    quickView.setResizeMode(QQuickView::SizeRootObjectToView);
-    quickView.show();
+    QQmlApplicationEngine engine;
+
+    engine.load(QStringLiteral("qrc:/qml/video.qml"));
 
     return app.exec();
 }

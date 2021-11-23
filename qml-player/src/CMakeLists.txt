@@ -69,7 +69,12 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 ENDIF()
 
 # Here the needed Qt Libraries are added to the link command.
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} Qt5::Quick VLCQt::Qml)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Quick
+    $<$<OR:$<PLATFORM_ID:Linux>,$<PLATFORM_ID:Windows>>:Qt${QT_VERSION_MAJOR}::Widgets>
+    VLCQt::Qml
+    )
 
 
 #
